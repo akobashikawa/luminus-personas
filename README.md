@@ -5,7 +5,7 @@
 ## Hola Mundo MVC
 
 - Usa el sistema de templates
-- [src\clj\luminus_personas\routes\home.clj]()
+- [src\clj\luminus_personas\routes\home.clj](https://github.com/akobashikawa/luminus-personas/blob/holamundo-mvc/src/clj/luminus_personas/routes/home.clj)
 
 ```clj
 (defn holamundo-page [request]
@@ -19,7 +19,7 @@
    ["/holamundo" {:get holamundo-page}]])
 ```
 
-- [resources\html\holamundo.html]()
+- [resources\html\holamundo.html](https://github.com/akobashikawa/luminus-personas/blob/holamundo-mvc/resources/html/holamundo.html)
 
 ```html
 {% extends "base.html" %}
