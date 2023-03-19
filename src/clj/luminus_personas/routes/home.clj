@@ -14,11 +14,15 @@
 (defn about-page [request]
   (layout/render request "about.html"))
 
+(defn holamundo-page [request]
+  (layout/render request "holamundo.html"))
+
 (defn home-routes []
   [ "" 
    {:middleware [middleware/wrap-csrf
                  middleware/wrap-formats
                  ]}
    ["/" {:get home-page}]
-   ["/about" {:get about-page}]])
+   ["/about" {:get about-page}]
+   ["/holamundo" {:get holamundo-page}]])
 
