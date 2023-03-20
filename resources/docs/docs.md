@@ -5,3 +5,6 @@
   
 - [Hola Mundo MVC](/holamundo)
   - Saludar a todos con una página dinámica MVC
+  
+- [Hola MVC](/hola)
+  - Saludar a alguien con una página dinámica MVC
