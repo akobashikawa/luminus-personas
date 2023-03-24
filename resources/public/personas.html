@@ -1,0 +1,180 @@
+<html>
+
+<head>
+    <title>Personas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="app" class="container">
+        <h1>Personas</h1>
+
+        <input type="text" class="form-control" placeholder="Nombre" v-model="nombre">
+
+        <p>
+            <button class="btn btn-primary mt-2" @click="agregar">Agregar</button>
+        </p>
+
+        <p class="text-bg-danger p-3 my-2" v-if="error">{{ error }}</p>
+        <p class="text-bg-success p-3 my-2" v-if="nuevaPersona">Persona agregada: {{ nuevaPersona.nombre }}</p>
+
+        <p>
+            <button class="btn btn-primary mt-2" @click="listar">Listar</button>
+        </p>
+
+        <p>Personas: {{ personas.length || 0 }}</p>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>nombre</th>
+                    <th>acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="persona of personas">
+                    <td>{{ persona.id }}</td>
+                    <td>{{ persona.nombre }}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" @click="eliminar(persona)">Eliminar</button>
+                        <button class="btn btn-primary btn-sm mx-1" @click="abrirModal(persona)">Editar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="modal fade" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Persona</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>id: {{ personaEditada.id }}</p>
+                        <input type="text" class="form-control" placeholder="Nombre" v-model="personaEditada.nombre">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" @click="guardar">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    nombre: '',
+                    nuevaPersona: null,
+                    personaEliminada: null,
+                    personaEditada: {
+                        id: 0,
+                        nombre: ''
+                    },
+                    personas: [],
+                    error: '',
+                    myModal: null,
+                };
+            },
+
+            methods: {
+                async agregar() {
+                    const url = '/api/personas';
+                    const body = { nombre: this.nombre };
+
+                    try {
+                        this.error = '';
+                        const response = await axios.post(url, body);
+                        this.nuevaPersona = response.data;
+                        this.listar();
+                    } catch (error) {
+                        this.error = 'Error: ' + error;
+                        this.nuevaPersona = null;
+                    }
+                },
+
+                async traer(id) {
+                    const url = `/api/personas/${id}`;
+
+                    try {
+                        this.error = '';
+                        const response = await axios.get(url);
+                        this.personaEditada = response.data;
+                        console.log(this.personaEditada);
+                    } catch (error) {
+                        this.error = 'Error: ' + error;
+                    }
+                },
+
+                async guardar() {
+                    const url = `/api/personas/${this.personaEditada.id}`;
+                    const body = { nombre: this.personaEditada.nombre };
+
+                    try {
+                        this.error = '';
+                        const response = await axios.put(url, body);
+                        this.listar();
+                    } catch (error) {
+                        this.error = 'Error: ' + error;
+                    }
+                },
+
+                async listar() {
+                    const url = '/api/personas';
+
+                    try {
+                        this.error = '';
+                        const response = await axios.get(url);
+                        this.personas = response.data;
+                    } catch (error) {
+                        this.error = 'Error: ' + error;
+                    }
+                },
+
+                async eliminar(persona) {
+                    console.log(persona);
+                    const url = `/api/personas/${persona.id}`;
+
+                    try {
+                        this.error = '';
+                        const response = await axios.delete(url);
+                        this.personaEliminada = response.data;
+                        this.listar();
+                    } catch (error) {
+                        this.error = 'Error: ' + error;
+                    }
+                },
+
+                abrirModal(persona) {
+                    this.traer(persona.id);
+                    this.myModal.show();
+                },
+            },
+
+
+            mounted() {
+                this.myModal = new bootstrap.Modal('#myModal', {
+                });
+
+                this.listar();
+            },
+        }).mount('#app');  
+    </script>
+
+</body>
+
+</html>
