@@ -26,3 +26,9 @@ Requiere [Leiningen][1] 2.0 o superior instalado.
 
 - [hola-mvc](https://github.com/akobashikawa/luminus-personas/tree/hola-mvc)
     - Saluda a alguien usando MVC
+
+- [hola-rest](https://github.com/akobashikawa/luminus-personas/tree/hola-rest)
+    - Saluda a alguien usando un servicio
+
+- [personas](https://github.com/akobashikawa/luminus-personas/tree/personas)
+    - Lista de personas
