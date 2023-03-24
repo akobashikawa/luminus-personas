@@ -3,10 +3,8 @@
             [clojure.java.io :as io]
             [luminus-personas.layout :as layout]
             [luminus-personas.middleware :as middleware]
+            [luminus-personas.personas-service :refer :all]
             [ring.util.response]))
-
-(defmacro dbg [x] `(let [x# ~x] (println "dbg:" '~x "=" x#) x#))
-
 
 (defn home-page [request]
   (layout/render request "home.html" {:docs (-> "docs/docs.md" io/resource slurp)}))
@@ -32,6 +30,21 @@
      :headers {"Content-Type" "application/json"}
      :body (json/write-str {:saludo (str "Hola, " nombre "!")})}))
 
+(defn get-personas [request]
+  (let [personas (get-all)]
+    {:status 200
+     :headers {"Content-Type" "application/json"}
+     :body (json/write-str personas)}))
+
+(defn add-persona [request]
+  (let [
+        persona {:id 1 :nombre "Ana"}]
+    {:status 201
+     :headers {"Content-Type" "application/json"}
+     :body (json/write-str persona)}
+)
+  )
+
 (defn home-routes []
   [ "" 
    {:middleware [
@@ -42,5 +55,7 @@
    ["/about" {:get about-page}]
    ["/holamundo" {:get holamundo-page}]
    ["/hola" {:get hola-page :post hola-action}]
-   ["/api/hola" {:post api-hola}]])
+   ["/api/hola" {:post api-hola}]
+   ["/api/personas" {:get get-personas :post add-persona}]
+   ])
 
