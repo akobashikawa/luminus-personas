@@ -1,11 +1,9 @@
 (ns luminus-personas.routes.home
-  (:require
-   [luminus-personas.layout :as layout]
-   [clojure.java.io :as io]
-   [luminus-personas.middleware :as middleware]
-   [ring.util.response]
-   [ring.util.http-response :as response]
-   [ring.middleware.params :as params]))
+  (:require [clojure.data.json :as json]
+            [clojure.java.io :as io]
+            [luminus-personas.layout :as layout]
+            [luminus-personas.middleware :as middleware]
+            [ring.util.response]))
 
 (defmacro dbg [x] `(let [x# ~x] (println "dbg:" '~x "=" x#) x#))
 
@@ -26,14 +24,23 @@
   (let [nombre (-> request :params :nombre)]
     (layout/render request "hola.html" {:nombre nombre})))
 
+(defn api-hola [request]
+  ;; (let [nombre (get-in request [:params :nombre])]
+  ;; (let [nombre (:nombre (:params request))]
+  (let [nombre (-> request :params :nombre)]
+    {:status 200
+     :headers {"Content-Type" "application/json"}
+     :body (json/write-str {:saludo (str "Hola, " nombre "!")})}))
+
 (defn home-routes []
   [ "" 
    {:middleware [
                 ;;  middleware/wrap-csrf
-                 middleware/wrap-formats
-                 ]}
+                 middleware/wrap-formats]}
+                 
    ["/" {:get home-page}]
    ["/about" {:get about-page}]
    ["/holamundo" {:get holamundo-page}]
-   ["/hola" {:get hola-page :post hola-action}]])
+   ["/hola" {:get hola-page :post hola-action}]
+   ["/api/hola" {:post api-hola}]])
 

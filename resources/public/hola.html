@@ -36,7 +36,7 @@
 
         methods: {
             hola() {
-                const url = '/hola';
+                const url = '/api/hola';
                 const body = { nombre: this.nombre };
                 axios.post(url, body)
                     .then(response => {
