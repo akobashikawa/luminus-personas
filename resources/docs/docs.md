@@ -8,3 +8,6 @@
   
 - [Hola MVC](/hola)
   - Saludar a alguien con una página dinámica MVC
+  
+- [Hola REST](/hola.html)
+  - Saludar a alguien con una página estática que consulta un servicio
