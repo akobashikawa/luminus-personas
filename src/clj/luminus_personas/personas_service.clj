@@ -8,7 +8,8 @@
   @personas)
 
 (defn save [persona]
-;;   (let [nueva-persona (assoc persona :id (str (count @personas)))]
-    
-;;   (swap! personas conj nueva-persona)
-  {:id 1 :nombre "Ana"})
+  (let [nueva-persona (assoc persona :id (str (+ 1 (count @personas))))]
+  (swap! personas conj nueva-persona)
+    ;; (dbg persona)
+    ;; (dbg nueva-persona)
+  nueva-persona))

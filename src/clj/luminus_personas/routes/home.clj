@@ -37,8 +37,8 @@
      :body (json/write-str personas)}))
 
 (defn add-persona [request]
-  (let [
-        persona {:id 1 :nombre "Ana"}]
+  (let [body (:params request)
+        persona (save body)]
     {:status 201
      :headers {"Content-Type" "application/json"}
      :body (json/write-str persona)}
