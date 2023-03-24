@@ -1,15 +1,16 @@
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %} {% endblock %}</title>
+    <title>Luminus Personas</title>
 
     <!-- styles -->
-    {% style "/assets/bulma/css/bulma.min.css" %}
-    {% style "/assets/material-icons/css/material-icons.min.css" %}
+    <link href="/assets/bulma/css/bulma.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/material-icons/css/material-icons.min.css" rel="stylesheet" type="text/css" />
 
-    {% style "/css/screen.css" %}
+    <link href="/css/screen.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
       <!-- navbar -->
@@ -25,8 +26,8 @@
               </div>
               <div id="nav-menu" class="navbar-menu">
                   <div class="navbar-start">
-                      <a href="/" class="navbar-item{% ifequal page "home.html" %} is-active{%endifequal%}">Home</a>
-                      <a href="/about" class="navbar-item{% ifequal page "about.html" %} is-active{%endifequal%}">About</a>
+                      <a href="/" class="navbar-item">Home</a>
+                      <a href="/about" class="navbar-item">About</a>
                   </div>
               </div>
           </div>
@@ -34,8 +35,26 @@
 
       <section class="section">
           <div class="container">
-              {% block content %}
-              {% endblock %}
+              
+<h1 class="title">Hola</h1>
+
+<div class="block">
+    <form action="/hola" method="POST">
+        <div class="field">
+            <label class="label">Nombre</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Nombre" name="nombre">
+            </div>
+        </div>
+        <div class="control">
+            <button class="button is-link">Hola</button>
+        </div>
+    </form>
+
+</div>
+
+<h2 class="subtitle">Hola Mundo!</h2>
+
           </div>
       </section>
 
@@ -52,7 +71,7 @@
     </script>
 
     
-    {% block page-scripts %}
-    {% endblock %}
+    
+    
   </body>
 </html>
